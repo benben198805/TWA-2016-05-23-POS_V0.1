@@ -1,33 +1,26 @@
 //TODO: Please write code in this file.
-function product(barcode,name,price,unit)
-{ 
-    this.barcode=barcode;
-    this.name=name;
-    this.sumPrice=price;
-    this.price=price;
-    this.num=1;
-    this.unit=unit;
-    
-    this.addNumber=function() {
-       this.sumPrice+=this.price;
-       this.num++;
-    }
-}
-
-
 function printInventory(inputs) {
     var productList=[];
     var barcodeList=[];
     var sum=0;
     var result="***<没钱赚商店>购物清单***\n";
-    inputs.forEach(function(element) {
+    inputs.forEach(function(
+        element) {
         if(productList[element.barcode])
         {
-            productList[element.barcode].addNumber();
+            productList[element.barcode].num++;
+            productList[element.barcode].sumPrice+=productList[element.barcode].price;
         }
         else
         {
-            productList[element.barcode]=new product(element.barcode,element.name,element.price,element.unit);
+            productList[element.barcode]={
+                barcode:element.barcode,
+                name:element.name,
+                sumPrice:element.price,
+                price:element.price,
+                num:1,
+                unit:element.unit
+            };
             
             barcodeList.push(element.barcode);  
         }
