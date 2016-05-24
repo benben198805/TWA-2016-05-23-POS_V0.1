@@ -3,7 +3,7 @@ describe('pos', function () {
 
     beforeEach(function () {
         inputs = [
-            {
+            {   
                 barcode: 'ITEM000000',
                 name: '可口可乐',
                 unit: '瓶',

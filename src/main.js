@@ -1,36 +1,50 @@
 //TODO: Please write code in this file.
 function printInventory(inputs) {
-    var productList=[];
-    var sum=0;
-    var result="***<没钱赚商店>购物清单***\n";
-    inputs.forEach(function(
+    var bill = billingCart(inputs);
+    var outputString = formatOutput(bill);
+
+    console.log(outputString);
+}
+
+function billingCart(inputs) {
+    var bill = [];
+    inputs.forEach(function (
         element) {
-        if(productList[element.barcode])
-        {
-            productList[element.barcode].num++;
-            productList[element.barcode].sumPrice+=productList[element.barcode].price;
+        if (bill[element.barcode]) {
+            bill[element.barcode].count++;
+            bill[element.barcode].sumPrice += bill[element.barcode].price;
+            bill[element.barcode].sumPriceFormat = bill[element.barcode].sumPrice.toFixed(2);
         }
-        else
-        {
-            productList[element.barcode]={
-                barcode:element.barcode,
-                name:element.name,
-                sumPrice:element.price,
-                price:element.price,
-                num:1,
-                unit:element.unit
+        else {
+            bill[element.barcode] = {
+                name: element.name,
+                sumPrice: element.price,
+                price: element.price,
+                count: 1,
+                unit: element.unit,
+                sumPriceFormat: element.price.toFixed(2),
+                priceFormat: element.price.toFixed(2)
             };
         }
-        sum+=element.price;
-    }, this);
-    
-    for (var key in productList) {
-        result+="名称："+productList[key].name+"，";
-        result+="数量："+productList[key].num+productList[key].unit+"，";
-        result+="单价："+productList[key].price.toFixed(2)+"(元)，"
-        result+="小计："+productList[key].sumPrice.toFixed(2)+"(元)\n";
+    });
+    return bill;
+}
+function formatOutput(bill) {
+    var subTotal = 0;
+    var result = "***<没钱赚商店>购物清单***\n";
+    for (var key in bill) {
+        if (bill.hasOwnProperty(key)) {
+            result += "名称：" + bill[key].name + "，";
+            result += "数量：" + bill[key].count + bill[key].unit + "，";
+            result += "单价：" + bill[key].priceFormat + "(元)，"
+            result += "小计：" + bill[key].sumPriceFormat + "(元)\n";
+
+            subTotal += bill[key].count * bill[key].price;
+        }
     }
-            
-    result+='----------------------\n总计：'+sum.toFixed(2)+'(元)\n**********************';
-    console.log(result);
+
+    result += "----------------------\n总计：";
+    result += subTotal.toFixed(2);
+    result += "(元)\n**********************";
+    return result;
 }
