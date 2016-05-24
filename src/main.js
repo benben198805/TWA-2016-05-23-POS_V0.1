@@ -7,16 +7,16 @@ function printInventory(inputs) {
 }
 
 function billingCart(inputs) {
-    var bill = [];
+    var bill = new Map();
     inputs.forEach(function (
         element) {
-        if (bill[element.barcode]) {
-            bill[element.barcode].count++;
-            bill[element.barcode].sumPrice += bill[element.barcode].price;
-            bill[element.barcode].sumPriceFormat = bill[element.barcode].sumPrice.toFixed(2);
+        if (bill.has(element.barcode)) {
+            bill.get(element.barcode).count++;
+            bill.get(element.barcode).sumPrice += bill.get(element.barcode).price;
+            bill.get(element.barcode).sumPriceFormat = bill.get(element.barcode).sumPrice.toFixed(2);
         }
         else {
-            bill[element.barcode] = {
+             var newGood= {
                 name: element.name,
                 sumPrice: element.price,
                 price: element.price,
@@ -25,6 +25,7 @@ function billingCart(inputs) {
                 sumPriceFormat: element.price.toFixed(2),
                 priceFormat: element.price.toFixed(2)
             };
+            bill.set(element.barcode,newGood);
         }
     });
     return bill;
@@ -32,15 +33,13 @@ function billingCart(inputs) {
 function formatOutput(bill) {
     var subTotal = 0;
     var result = "***<没钱赚商店>购物清单***\n";
-    for (var key in bill) {
-        if (bill.hasOwnProperty(key)) {
-            result += "名称：" + bill[key].name + "，";
-            result += "数量：" + bill[key].count + bill[key].unit + "，";
-            result += "单价：" + bill[key].priceFormat + "(元)，"
-            result += "小计：" + bill[key].sumPriceFormat + "(元)\n";
+    for (var [key,value] of bill) {
+        result += "名称：" + value.name + "，";
+        result += "数量：" + value.count + value.unit + "，";
+        result += "单价：" + value.priceFormat + "(元)，"
+        result += "小计：" + value.sumPriceFormat + "(元)\n";
 
-            subTotal += bill[key].count * bill[key].price;
-        }
+        subTotal += value.count * value.price;
     }
 
     result += "----------------------\n总计：";
