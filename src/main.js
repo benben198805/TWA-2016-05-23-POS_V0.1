@@ -1,11 +1,9 @@
-//TODO: Please write code in this file.
 function printInventory(inputs) {
     var bill = billingCart(inputs);
     var outputString = formatOutput(bill);
 
     console.log(outputString);
 }
-
 function billingCart(inputs) {
     var bill = new Map();
     inputs.forEach(function (
